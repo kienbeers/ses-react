@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import StoreProvider from "../store/Provider";
-import Context from "../store/Context";
-import { addProduct, editProduct, removeProduct } from "../store/Actions";
-import Column from "antd/es/table/Column";
+import Context from "../../store/Context";
+import { addProduct, editProduct, removeProduct } from "../../store/Actions";
 import { Button, Input, Table } from "antd";
 
 function ReduxExample() {

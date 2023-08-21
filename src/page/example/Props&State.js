@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Style.css";
+import "../../styles/Style.css";
 import { Table } from "antd";
 function PropsAndState() {
   const dataSource = [

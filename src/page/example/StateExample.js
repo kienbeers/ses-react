@@ -1,7 +1,7 @@
 import React from "react";
-import "../styles/Style.css";
-import state1 from "../asset/images/state1.png";
-import state2 from "../asset/images/state2.png";
+import "../../styles/Style.css";
+import state1 from "../../asset/images/state1.png";
+import state2 from "../../asset/images/state2.png";
 import { Image } from "antd";
 function StateExample() {
   return (

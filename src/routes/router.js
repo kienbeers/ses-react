@@ -1,83 +1,91 @@
-import EventHandling from "../page/EventHandling";
-import FormExample from "../page/Form";
-import Home from "../page/Home";
-import KeyExample from "../page/KeyExample";
-import LifeCycleEx from "../page/LifeCycle";
-import ListAndKeyExample from "../page/ListAndKey";
-import ListExample from "../page/ListExampe";
-import PropsAndState from "../page/Props&State";
-import PropsExample from "../page/PropsExample";
-import ReactRefsEx from "../page/ReactRefs";
-import ReactRouterExample from "../page/ReactRouter";
-import ReduxExample from "../page/ReduxExample";
-import StateExample from "../page/StateExample";
-import TransitionExample from "../page/Transition";
-import ComponentExample from "../page/component";
-
+import Home from "../page/example/Home";
+import PropsExample from "../page/example/PropsExample";
+import StateExample from "../page/example/StateExample";
+import PropsAndState from "../page/example/Props&State";
+import EventHandling from "../page/example/EventHandling";
+import ComponentExample from "../page/example/component";
+import LifeCycleEx from "../page/example/LifeCycle";
+import ReactRefsEx from "../page/example/ReactRefs";
+import ListExample from "../page/example/ListExampe";
+import KeyExample from "../page/example/KeyExample";
+import FormExample from "../page/example/Form";
+import ReactRouterExample from "../page/example/ReactRouter";
+import ReduxExample from "../page/example/ReduxExample";
+import TransitionExample from "../page/example/Transition";
+import S3MDataLoadFrame1 from "../page/load/S3MDataLoadFrame1";
+import S3MDataLoadFrame2 from "../page/load/S3MDataLoadFrame2";
+import ErorrApp from "../page/404Erorr";
 
 const publicRoutes = [
-    {
-        path: "/",
-        component: Home,
-    },
-    {
-        path: "/props",
-        component: PropsExample,
-    },
-    {
-        path: "/state",
-        component: StateExample,
-    },
-    {
-        path: "/propsvsstate",
-        component: PropsAndState,
-    },
-    {
-        path: "/event",
-        component: EventHandling,
-    },
-    {
-        path: "/component",
-        component: ComponentExample,
-    },
-    {
-        path: "/lifecycle",
-        component: LifeCycleEx,
-    },
-    {
-        path: "/reactrefs",
-        component: ReactRefsEx,
-    },
-    {
-        path: "/list",
-        component: ListExample,
-    },
-    {
-        path: "/key",
-        component: KeyExample,
-    },
-    {
-        path: "/form",
-        component: FormExample,
-    },
-    {
-        path: "/reactrouter",
-        component: ReactRouterExample,
-    },
-    {
-        path: "/redux",
-        component: ReduxExample,
-    },
-    {
-        path: "/transition",
-        component: TransitionExample,
-    },
-    {
-        path: "/error",
-        component: PropsAndState,
-    },
-
-]
+  {
+    path: "/",
+    component: Home,
+  },
+  {
+    path: "/props",
+    component: PropsExample,
+  },
+  {
+    path: "/state",
+    component: StateExample,
+  },
+  {
+    path: "/propsvsstate",
+    component: PropsAndState,
+  },
+  {
+    path: "/event",
+    component: EventHandling,
+  },
+  {
+    path: "/component",
+    component: ComponentExample,
+  },
+  {
+    path: "/lifecycle",
+    component: LifeCycleEx,
+  },
+  {
+    path: "/reactrefs",
+    component: ReactRefsEx,
+  },
+  {
+    path: "/list",
+    component: ListExample,
+  },
+  {
+    path: "/key",
+    component: KeyExample,
+  },
+  {
+    path: "/form",
+    component: FormExample,
+  },
+  {
+    path: "/reactrouter",
+    component: ReactRouterExample,
+  },
+  {
+    path: "/redux",
+    component: ReduxExample,
+  },
+  {
+    path: "/transition",
+    component: TransitionExample,
+  },
+  {
+    path: "/load/frame1",
+    component: S3MDataLoadFrame1,
+  },
+  {
+    path: "/load/frame2",
+    component: S3MDataLoadFrame2,
+  },
+  {
+    path: "/error",
+    component: ErorrApp,
+  },
+];
 
 const privateRoutes = [];
-export { publicRoutes, privateRoutes }
+export { publicRoutes, privateRoutes };

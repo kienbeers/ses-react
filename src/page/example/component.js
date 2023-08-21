@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactDOM } from "react";
-import "../styles/Style.css";
+import "../../styles/Style.css";
 import { Button, Card } from "antd";
 function ComponentExample() {
   return (

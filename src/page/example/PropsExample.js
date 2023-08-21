@@ -1,6 +1,6 @@
 import React from "react";
-import props from "../asset/images/props.png";
-import "../styles/Style.css";
+import props from "../../asset/images/props.png";
+import "../../styles/Style.css";
 import { Card, Image } from "antd";
 function PropsExample() {
   return (
