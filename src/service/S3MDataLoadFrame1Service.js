@@ -113,15 +113,24 @@ export const sendmessage = (entity) => {
     "," +
     entity.thdVln +
     ")*1f25";
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var raw = JSON.stringify({
+    brokerUrl: "tcp://localhost:1883",
+    username: "kienrang",
+    password: "123456",
+    clientId: "client-sub",
+    defaultTopic: "loadTopic",
+    message: message,
+  });
 
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
-    body: message,
+    body: raw,
     redirect: "follow",
   };
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "text/plain");
 
   fetch("http://localhost:8080/send-message", requestOptions)
     .then((response) => response.text())

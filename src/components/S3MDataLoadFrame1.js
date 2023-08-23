@@ -1,12 +1,16 @@
 import { Button, Card, DatePicker, Input, Switch } from "antd";
-import React, { useEffect, useState } from "react";
-import "../../styles/card.css";
-import InputMinMax from "../../components/InputMinMax";
-import S3MDataLoadFrame1Entity from "../../entities/S3MDataLoadFrame1Entity";
+import React, { useContext, useEffect, useState } from "react";
+import "../styles/card.css";
+import InputMinMax from "./InputMinMax";
+import FormReceive from "./FormReceive";
+import S3MDataLoadFrame1Entity from "../entities/S3MDataLoadFrame1Entity";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { sendmessage } from "../../service/S3MDataLoadFrame1Service";
-export default function S3MDataLoadFrame1() {
+import { sendmessage } from "../service/S3MDataLoadFrame1Service";
+import Context from "../store/Context";
+import { updatestatus } from "../store/Actions";
+export default function S3MDataLoadFrame1(props) {
+  const [state, dispatch] = useContext(Context);
   function formatDateToDDMMYYYYHHMMSS(date) {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -43,7 +47,14 @@ export default function S3MDataLoadFrame1() {
   };
   const [timerId, setTimerId] = useState(null);
 
+  const updateStatus = (payload) => {
+    dispatch(updatestatus(payload));
+  };
+
   const handelCkickRun = () => {
+    updateStatus({ key: props.data, status: true });
+    console.log(url, username, password, client, topic);
+
     if (timerId != null) {
       clearInterval(timerId);
     }
@@ -118,7 +129,7 @@ export default function S3MDataLoadFrame1() {
           Math.floor(new Date().getTime() / 1000),
           random(minThdIn, maxThdIn),
           Math.floor(random(0, 10000000)),
-          Math.floor(random(1, 100))
+          deviceId
         );
         sendmessage(e);
       }, frequency);
@@ -127,6 +138,7 @@ export default function S3MDataLoadFrame1() {
     }
   };
   const handelCkickStop = () => {
+    updateStatus({ key: props.data, status: false });
     clearInterval(timerId);
   };
   const validationForm = () => {
@@ -1082,7 +1094,8 @@ export default function S3MDataLoadFrame1() {
   const [maxThdVcn, setMaxThdVcn] = useState(100);
   const [minThdVln, setMinThdVln] = useState(0);
   const [maxThdVln, setMaxThdVln] = useState(100);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(false);
+  const [deviceId, setDeviceId] = useState();
   const [disabled, setDisable] = useState(false);
   const onChangeSw = (checked) => {
     setDisable(checked);
@@ -1090,11 +1103,18 @@ export default function S3MDataLoadFrame1() {
   };
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
+  const [url, setUrl] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [client, setClient] = useState("");
+  const [topic, setToppics] = useState("");
   const onChangeTime = (time, timeString) => {
     setStartTime(new Date(timeString[0]));
     setEndTime(new Date(timeString[1]));
   };
   const checkTime = () => {
+    console.log("chạy");
+    updateStatus({ key: props.data, status: true });
     const id = setInterval(() => {
       const nows = new Date();
       const st = new Date(startTime);
@@ -1124,13 +1144,69 @@ export default function S3MDataLoadFrame1() {
   };
   useEffect(() => {
     clearInterval(timerId);
+    updateStatus({ key: props.data, status: false });
     setTimerId(null);
   }, [disabled]);
 
   return (
     <>
       {/* Thao tác */}
-      <div className="row">
+      <div className="mt-2 row">
+        <div className="col-8">
+          <p>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseExample10"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Setting user receive
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample10">
+            <div class="card card-body">
+              <div className="row">
+                <div className="col-6">
+                  <FormReceive
+                    url={url}
+                    setUrl={setUrl}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                    client={client}
+                    setClient={setClient}
+                    topic={topic}
+                    setToppic={setToppics}
+                  />
+                </div>
+                <div className="col-6">
+                  <h4 style={{ fontSize: "20px" }} className="mt-2">
+                    Url: {url === "" ? <i>không có dữ liệu</i> : url}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Username:{" "}
+                    {username === "" ? <i>không có dữ liệu</i> : username}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Password:{" "}
+                    {password === "" ? <i>không có dữ liệu</i> : "*******"}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Client: {client === "" ? <i>không có dữ liệu</i> : client}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Topic: {topic === "" ? <i>không có dữ liệu</i> : topic}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-2">
         <div className="col-5">
           <Card
             bordered={true}
@@ -1202,746 +1278,753 @@ export default function S3MDataLoadFrame1() {
       </div>
 
       {/* Set dữ liệu */}
-      <div className="row mt-4">
-        <ToastContainer />
-        {/* Cột 1 */}
-        <div className="col-4">
-          <Card bordered={true} className="bg-light">
-            <InputMinMax
-              title="UAB"
-              minValue={minUab}
-              maxValue={maxUab}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUab}
-              setMaxValue={setMaxUab}
+      <div class="card card-body mt-2">
+        <div className="row mt-4">
+          <ToastContainer />
+          {/* Cột 1 */}
+          <div className="col-4">
+            <Input
+              placeholder="Device Id"
+              value={deviceId}
+              onChange={(event) => setDeviceId(event.target.value)}
             />
-            <InputMinMax
-              className="mt-2"
-              title="UBC"
-              minValue={minUbc}
-              maxValue={maxUbc}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUbc}
-              setMaxValue={setMaxUbc}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="UCA"
-              minValue={minUca}
-              maxValue={maxUca}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUca}
-              setMaxValue={setMaxUca}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="ULL"
-              minValue={minUll}
-              maxValue={maxUll}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUll}
-              setMaxValue={setMaxUll}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="UAN"
-              minValue={minUan}
-              maxValue={maxUan}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUan}
-              setMaxValue={setMaxUan}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="UBN"
-              minValue={minUbn}
-              maxValue={maxUbn}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUbn}
-              setMaxValue={setMaxUbn}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="UCN"
-              minValue={minUcn}
-              maxValue={maxUcn}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUcn}
-              setMaxValue={setMaxUcn}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ULN"
-              minValue={minUln}
-              maxValue={maxUln}
-              minX={0}
-              maxX={44999}
-              minY={1}
-              maxY={45000}
-              setMinValue={setMinUln}
-              setMaxValue={setMaxUln}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="IA"
-              minValue={minIa}
-              maxValue={maxIa}
-              minX={0}
-              maxX={10000}
-              minY={1}
-              maxY={9999}
-              setMinValue={setMinIa}
-              setMaxValue={setMaxIa}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="IB"
-              minValue={minIb}
-              maxValue={maxIb}
-              minX={0}
-              maxX={10000}
-              minY={1}
-              maxY={9999}
-              setMinValue={setMinIb}
-              setMaxValue={setMaxIb}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="IC"
-              minValue={minIc}
-              maxValue={maxIc}
-              minX={0}
-              maxX={10000}
-              minY={1}
-              maxY={9999}
-              setMinValue={setMinIc}
-              setMaxValue={setMaxIc}
-            />
+            <Card bordered={true} className=" mt-2 bg-light">
+              <InputMinMax
+                title="UAB"
+                minValue={minUab}
+                maxValue={maxUab}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUab}
+                setMaxValue={setMaxUab}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="UBC"
+                minValue={minUbc}
+                maxValue={maxUbc}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUbc}
+                setMaxValue={setMaxUbc}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="UCA"
+                minValue={minUca}
+                maxValue={maxUca}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUca}
+                setMaxValue={setMaxUca}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="ULL"
+                minValue={minUll}
+                maxValue={maxUll}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUll}
+                setMaxValue={setMaxUll}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="UAN"
+                minValue={minUan}
+                maxValue={maxUan}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUan}
+                setMaxValue={setMaxUan}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="UBN"
+                minValue={minUbn}
+                maxValue={maxUbn}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUbn}
+                setMaxValue={setMaxUbn}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="UCN"
+                minValue={minUcn}
+                maxValue={maxUcn}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUcn}
+                setMaxValue={setMaxUcn}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ULN"
+                minValue={minUln}
+                maxValue={maxUln}
+                minX={0}
+                maxX={44999}
+                minY={1}
+                maxY={45000}
+                setMinValue={setMinUln}
+                setMaxValue={setMaxUln}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="IA"
+                minValue={minIa}
+                maxValue={maxIa}
+                minX={0}
+                maxX={10000}
+                minY={1}
+                maxY={9999}
+                setMinValue={setMinIa}
+                setMaxValue={setMaxIa}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="IB"
+                minValue={minIb}
+                maxValue={maxIb}
+                minX={0}
+                maxX={10000}
+                minY={1}
+                maxY={9999}
+                setMinValue={setMinIb}
+                setMaxValue={setMaxIb}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="IC"
+                minValue={minIc}
+                maxValue={maxIc}
+                minX={0}
+                maxX={10000}
+                minY={1}
+                maxY={9999}
+                setMinValue={setMinIc}
+                setMaxValue={setMaxIc}
+              />
 
-            <InputMinMax
-              className="mt-2"
-              title="IN"
-              minValue={minIN}
-              maxValue={maxIN}
-              minX={0}
-              maxX={10000}
-              minY={1}
-              maxY={9999}
-              setMinValue={setMinIN}
-              setMaxValue={setMaxIN}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="IG"
-              minValue={minIG}
-              maxValue={maxIG}
-              minX={0}
-              maxX={10000}
-              minY={1}
-              maxY={9999}
-              setMinValue={setMinIG}
-              setMaxValue={setMaxIG}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Iavg"
-              minValue={minIAvg}
-              maxValue={maxIAvg}
-              minX={0}
-              maxX={10000}
-              minY={1}
-              maxY={9999}
-              setMinValue={setMinIAvg}
-              setMaxValue={setMaxIAvg}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="Ep"
-              minValue={minEp}
-              maxValue={maxEp}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEp}
-              setMaxValue={setMaxEp}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Ep R"
-              minValue={minEpR}
-              maxValue={maxEpR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEpR}
-              setMaxValue={setMaxEpR}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Ep Dr"
-              minValue={minEpDR}
-              maxValue={maxEpDR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEpDR}
-              setMaxValue={setMaxEpDR}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Ep Drr"
-              minValue={minEpDRR}
-              maxValue={maxEpDRR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEpDRR}
-              setMaxValue={setMaxEpDRR}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="Eq"
-              minValue={minEq}
-              maxValue={maxEq}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEq}
-              setMaxValue={setMaxEq}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Eq R"
-              minValue={minEqR}
-              maxValue={maxEqR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEqR}
-              setMaxValue={setMaxEqR}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Eq Dr"
-              minValue={minEqDR}
-              maxValue={maxEqDR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEqDR}
-              setMaxValue={setMaxEqDR}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Eq Drr"
-              minValue={minEqDRR}
-              maxValue={maxEqDRR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEqDRR}
-              setMaxValue={setMaxEqDRR}
-            />
-          </Card>
-        </div>
-        {/* Cột 2 */}
-        <div className="col-4">
-          <Card bordered={true} className=" bg-light">
-            {" "}
-            <InputMinMax
-              className="mt-2"
-              title="F"
-              minValue={minF}
-              maxValue={maxF}
-              minX={45}
-              maxX={64}
-              minY={46}
-              maxY={65}
-              setMinValue={setMinF}
-              setMaxValue={setMaxF}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="Pa"
-              minValue={minPa}
-              maxValue={maxPa}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinPa}
-              setMaxValue={setMaxPa}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Pb"
-              minValue={minPb}
-              maxValue={maxPb}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinPb}
-              setMaxValue={setMaxPb}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Pc"
-              minValue={minPc}
-              maxValue={maxPc}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinPc}
-              setMaxValue={setMaxPc}
-            />
+              <InputMinMax
+                className="mt-2"
+                title="IN"
+                minValue={minIN}
+                maxValue={maxIN}
+                minX={0}
+                maxX={10000}
+                minY={1}
+                maxY={9999}
+                setMinValue={setMinIN}
+                setMaxValue={setMaxIN}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="IG"
+                minValue={minIG}
+                maxValue={maxIG}
+                minX={0}
+                maxX={10000}
+                minY={1}
+                maxY={9999}
+                setMinValue={setMinIG}
+                setMaxValue={setMaxIG}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Iavg"
+                minValue={minIAvg}
+                maxValue={maxIAvg}
+                minX={0}
+                maxX={10000}
+                minY={1}
+                maxY={9999}
+                setMinValue={setMinIAvg}
+                setMaxValue={setMaxIAvg}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="Ep"
+                minValue={minEp}
+                maxValue={maxEp}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEp}
+                setMaxValue={setMaxEp}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Ep R"
+                minValue={minEpR}
+                maxValue={maxEpR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEpR}
+                setMaxValue={setMaxEpR}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Ep Dr"
+                minValue={minEpDR}
+                maxValue={maxEpDR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEpDR}
+                setMaxValue={setMaxEpDR}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Ep Drr"
+                minValue={minEpDRR}
+                maxValue={maxEpDRR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEpDRR}
+                setMaxValue={setMaxEpDRR}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="Eq"
+                minValue={minEq}
+                maxValue={maxEq}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEq}
+                setMaxValue={setMaxEq}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Eq R"
+                minValue={minEqR}
+                maxValue={maxEqR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEqR}
+                setMaxValue={setMaxEqR}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Eq Dr"
+                minValue={minEqDR}
+                maxValue={maxEqDR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEqDR}
+                setMaxValue={setMaxEqDR}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Eq Drr"
+                minValue={minEqDRR}
+                maxValue={maxEqDRR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEqDRR}
+                setMaxValue={setMaxEqDRR}
+              />
+            </Card>
+          </div>
+          {/* Cột 2 */}
+          <div className="col-4">
+            <Card bordered={true} className=" bg-light">
+              {" "}
+              <InputMinMax
+                className="mt-2"
+                title="F"
+                minValue={minF}
+                maxValue={maxF}
+                minX={45}
+                maxX={64}
+                minY={46}
+                maxY={65}
+                setMinValue={setMinF}
+                setMaxValue={setMaxF}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="Pa"
+                minValue={minPa}
+                maxValue={maxPa}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinPa}
+                setMaxValue={setMaxPa}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Pb"
+                minValue={minPb}
+                maxValue={maxPb}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinPb}
+                setMaxValue={setMaxPb}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Pc"
+                minValue={minPc}
+                maxValue={maxPc}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinPc}
+                setMaxValue={setMaxPc}
+              />
 
-            <InputMinMax
-              className="mt-2"
-              title="P total"
-              minValue={minPTotal}
-              maxValue={maxPTotal}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinPTotal}
-              setMaxValue={setMaxPTotal}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2  bg-light">
-            <InputMinMax
-              title="Qa"
-              minValue={minQa}
-              maxValue={maxQa}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinQa}
-              setMaxValue={setMaxQa}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Qb"
-              minValue={minQb}
-              maxValue={maxQb}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinQb}
-              setMaxValue={setMaxQb}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Qc"
-              minValue={minQc}
-              maxValue={maxQc}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinQc}
-              setMaxValue={setMaxQc}
-            />
+              <InputMinMax
+                className="mt-2"
+                title="P total"
+                minValue={minPTotal}
+                maxValue={maxPTotal}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinPTotal}
+                setMaxValue={setMaxPTotal}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2  bg-light">
+              <InputMinMax
+                title="Qa"
+                minValue={minQa}
+                maxValue={maxQa}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinQa}
+                setMaxValue={setMaxQa}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Qb"
+                minValue={minQb}
+                maxValue={maxQb}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinQb}
+                setMaxValue={setMaxQb}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Qc"
+                minValue={minQc}
+                maxValue={maxQc}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinQc}
+                setMaxValue={setMaxQc}
+              />
 
-            <InputMinMax
-              className="mt-2"
-              title="Q total"
-              minValue={minQTotal}
-              maxValue={maxQTotal}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinQTotal}
-              setMaxValue={setMaxQTotal}
-            />
-          </Card>
-          <Card bordered={true} className=" mt-2 bg-light">
-            <InputMinMax
-              title="Sa"
-              minValue={minSa}
-              maxValue={maxSa}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinSa}
-              setMaxValue={setMaxSa}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Sb"
-              minValue={minSb}
-              maxValue={maxSb}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinSb}
-              setMaxValue={setMaxSb}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Sc"
-              minValue={minSc}
-              maxValue={maxSc}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinSc}
-              setMaxValue={setMaxSc}
-            />
+              <InputMinMax
+                className="mt-2"
+                title="Q total"
+                minValue={minQTotal}
+                maxValue={maxQTotal}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinQTotal}
+                setMaxValue={setMaxQTotal}
+              />
+            </Card>
+            <Card bordered={true} className=" mt-2 bg-light">
+              <InputMinMax
+                title="Sa"
+                minValue={minSa}
+                maxValue={maxSa}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinSa}
+                setMaxValue={setMaxSa}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Sb"
+                minValue={minSb}
+                maxValue={maxSb}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinSb}
+                setMaxValue={setMaxSb}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Sc"
+                minValue={minSc}
+                maxValue={maxSc}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinSc}
+                setMaxValue={setMaxSc}
+              />
 
-            <InputMinMax
-              className="mt-2"
-              title="S total"
-              minValue={minSTotal}
-              maxValue={maxSTotal}
-              minX={-2000000}
-              maxX={1999999}
-              minY={-1999999}
-              maxY={2000000}
-              setMinValue={setMinSTotal}
-              setMaxValue={setMaxSTotal}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="Pfa"
-              minValue={minPfa}
-              maxValue={maxPfa}
-              minX={-1}
-              maxX={0}
-              minY={0}
-              maxY={1}
-              setMinValue={setMinPfa}
-              setMaxValue={setMaxPfa}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Pfb"
-              minValue={minPfb}
-              maxValue={maxPfb}
-              minX={-1}
-              maxY={1}
-              maxX={0}
-              minY={0}
-              setMinValue={setMinPfb}
-              setMaxValue={setMaxPfb}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Pfc"
-              minValue={minPfc}
-              maxValue={maxPfc}
-              maxX={0}
-              minY={0}
-              minX={-1}
-              maxY={1}
-              setMinValue={setMinPfc}
-              setMaxValue={setMaxPfc}
-            />
+              <InputMinMax
+                className="mt-2"
+                title="S total"
+                minValue={minSTotal}
+                maxValue={maxSTotal}
+                minX={-2000000}
+                maxX={1999999}
+                minY={-1999999}
+                maxY={2000000}
+                setMinValue={setMinSTotal}
+                setMaxValue={setMaxSTotal}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="Pfa"
+                minValue={minPfa}
+                maxValue={maxPfa}
+                minX={-1}
+                maxX={0}
+                minY={0}
+                maxY={1}
+                setMinValue={setMinPfa}
+                setMaxValue={setMaxPfa}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Pfb"
+                minValue={minPfb}
+                maxValue={maxPfb}
+                minX={-1}
+                maxY={1}
+                maxX={0}
+                minY={0}
+                setMinValue={setMinPfb}
+                setMaxValue={setMaxPfb}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Pfc"
+                minValue={minPfc}
+                maxValue={maxPfc}
+                maxX={0}
+                minY={0}
+                minX={-1}
+                maxY={1}
+                setMinValue={setMinPfc}
+                setMaxValue={setMaxPfc}
+              />
 
-            <InputMinMax
-              className="mt-2"
-              title="Pf Avg"
-              minValue={minPFAvg}
-              maxValue={maxPFAvg}
-              maxX={0}
-              minY={0}
-              minX={-1}
-              maxY={1}
-              setMinValue={setMinPFAvg}
-              setMaxValue={setMaxPFAvg}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="Es"
-              minValue={minEs}
-              maxValue={maxEs}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEs}
-              setMaxValue={setMaxEs}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Es R"
-              minValue={minEsR}
-              maxValue={maxEsR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEsR}
-              setMaxValue={setMaxEsR}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Es Dr"
-              minValue={minEsDR}
-              maxValue={maxEsDR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEsDR}
-              setMaxValue={setMaxEsDR}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="Es Drr"
-              minValue={minEsDRR}
-              maxValue={maxEsDRR}
-              minX={0}
-              maxX={3999999999}
-              minY={1}
-              maxY={4000000000}
-              setMinValue={setMinEsDRR}
-              setMaxValue={setMaxEsDRR}
-            />
-          </Card>
-        </div>
-        {/* Cột 3 */}
+              <InputMinMax
+                className="mt-2"
+                title="Pf Avg"
+                minValue={minPFAvg}
+                maxValue={maxPFAvg}
+                maxX={0}
+                minY={0}
+                minX={-1}
+                maxY={1}
+                setMinValue={setMinPFAvg}
+                setMaxValue={setMaxPFAvg}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="Es"
+                minValue={minEs}
+                maxValue={maxEs}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEs}
+                setMaxValue={setMaxEs}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Es R"
+                minValue={minEsR}
+                maxValue={maxEsR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEsR}
+                setMaxValue={setMaxEsR}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Es Dr"
+                minValue={minEsDR}
+                maxValue={maxEsDR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEsDR}
+                setMaxValue={setMaxEsDR}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="Es Drr"
+                minValue={minEsDRR}
+                maxValue={maxEsDRR}
+                minX={0}
+                maxX={3999999999}
+                minY={1}
+                maxY={4000000000}
+                setMinValue={setMinEsDRR}
+                setMaxValue={setMaxEsDRR}
+              />
+            </Card>
+          </div>
+          {/* Cột 3 */}
 
-        <div className="col-4">
-          <Card bordered={true} className="bg-light">
-            <InputMinMax
-              title="T1"
-              minValue={minT1}
-              maxValue={maxT1}
-              minX={0}
-              maxX={249}
-              minY={1}
-              maxY={250}
-              setMinValue={setMinT1}
-              setMaxValue={setMaxT1}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="T2"
-              minValue={minT2}
-              maxValue={maxT2}
-              minX={0}
-              maxX={249}
-              minY={1}
-              maxY={250}
-              setMinValue={setMinT2}
-              setMaxValue={setMaxT2}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="T3"
-              minValue={minT2}
-              maxValue={maxT2}
-              minX={0}
-              maxX={249}
-              minY={1}
-              maxY={250}
-              setMinValue={setMinT2}
-              setMaxValue={setMaxT2}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="ThdIa"
-              minValue={minThdIa}
-              maxValue={maxThdIa}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdIa}
-              setMaxValue={setMaxThdIa}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdIb"
-              minValue={minThdIb}
-              maxValue={maxThdIb}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdIb}
-              setMaxValue={setMaxThdIb}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdIc"
-              minValue={minThdIc}
-              maxValue={maxThdIc}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdIc}
-              setMaxValue={setMaxThdIc}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdIn"
-              minValue={minThdIn}
-              maxValue={maxThdIn}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdIn}
-              setMaxValue={setMaxThdIn}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdIg"
-              minValue={minThdIg}
-              maxValue={maxThdIg}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdIg}
-              setMaxValue={setMaxThdIg}
-            />
-          </Card>
-          <Card bordered={true} className="mt-2 bg-light">
-            <InputMinMax
-              title="ThdVab"
-              minValue={minThdVab}
-              maxValue={maxThdVab}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVab}
-              setMaxValue={setMaxThdVab}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVbc"
-              minValue={minThdVbc}
-              maxValue={maxThdVbc}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVbc}
-              setMaxValue={setMaxThdVbc}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVca"
-              minValue={minThdVca}
-              maxValue={maxThdVca}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVca}
-              setMaxValue={setMaxThdVca}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVll"
-              minValue={minThdVll}
-              maxValue={maxThdVll}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVll}
-              setMaxValue={setMaxThdVll}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVan"
-              minValue={minThdVan}
-              maxValue={maxThdVan}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVan}
-              setMaxValue={setMaxThdVan}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVbn"
-              minValue={minThdVbn}
-              maxValue={maxThdVbn}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVbn}
-              setMaxValue={setMaxThdVbn}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVcn"
-              minValue={minThdVcn}
-              maxValue={maxThdVcn}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVcn}
-              setMaxValue={setMaxThdVcn}
-            />
-            <InputMinMax
-              className="mt-2"
-              title="ThdVln"
-              minValue={minThdVln}
-              maxValue={maxThdVln}
-              minX={0}
-              maxX={99}
-              minY={1}
-              maxY={100}
-              setMinValue={setMinThdVln}
-              setMaxValue={setMaxThdVln}
-            />
-          </Card>
+          <div className="col-4">
+            <Card bordered={true} className="bg-light">
+              <InputMinMax
+                title="T1"
+                minValue={minT1}
+                maxValue={maxT1}
+                minX={0}
+                maxX={249}
+                minY={1}
+                maxY={250}
+                setMinValue={setMinT1}
+                setMaxValue={setMaxT1}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="T2"
+                minValue={minT2}
+                maxValue={maxT2}
+                minX={0}
+                maxX={249}
+                minY={1}
+                maxY={250}
+                setMinValue={setMinT2}
+                setMaxValue={setMaxT2}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="T3"
+                minValue={minT2}
+                maxValue={maxT2}
+                minX={0}
+                maxX={249}
+                minY={1}
+                maxY={250}
+                setMinValue={setMinT2}
+                setMaxValue={setMaxT2}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="ThdIa"
+                minValue={minThdIa}
+                maxValue={maxThdIa}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdIa}
+                setMaxValue={setMaxThdIa}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdIb"
+                minValue={minThdIb}
+                maxValue={maxThdIb}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdIb}
+                setMaxValue={setMaxThdIb}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdIc"
+                minValue={minThdIc}
+                maxValue={maxThdIc}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdIc}
+                setMaxValue={setMaxThdIc}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdIn"
+                minValue={minThdIn}
+                maxValue={maxThdIn}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdIn}
+                setMaxValue={setMaxThdIn}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdIg"
+                minValue={minThdIg}
+                maxValue={maxThdIg}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdIg}
+                setMaxValue={setMaxThdIg}
+              />
+            </Card>
+            <Card bordered={true} className="mt-2 bg-light">
+              <InputMinMax
+                title="ThdVab"
+                minValue={minThdVab}
+                maxValue={maxThdVab}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVab}
+                setMaxValue={setMaxThdVab}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVbc"
+                minValue={minThdVbc}
+                maxValue={maxThdVbc}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVbc}
+                setMaxValue={setMaxThdVbc}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVca"
+                minValue={minThdVca}
+                maxValue={maxThdVca}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVca}
+                setMaxValue={setMaxThdVca}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVll"
+                minValue={minThdVll}
+                maxValue={maxThdVll}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVll}
+                setMaxValue={setMaxThdVll}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVan"
+                minValue={minThdVan}
+                maxValue={maxThdVan}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVan}
+                setMaxValue={setMaxThdVan}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVbn"
+                minValue={minThdVbn}
+                maxValue={maxThdVbn}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVbn}
+                setMaxValue={setMaxThdVbn}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVcn"
+                minValue={minThdVcn}
+                maxValue={maxThdVcn}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVcn}
+                setMaxValue={setMaxThdVcn}
+              />
+              <InputMinMax
+                className="mt-2"
+                title="ThdVln"
+                minValue={minThdVln}
+                maxValue={maxThdVln}
+                minX={0}
+                maxX={99}
+                minY={1}
+                maxY={100}
+                setMinValue={setMinThdVln}
+                setMaxValue={setMaxThdVln}
+              />
+            </Card>
+          </div>
         </div>
       </div>
     </>
