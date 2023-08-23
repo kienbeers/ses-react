@@ -131,7 +131,13 @@ export default function S3MDataLoadFrame1(props) {
           Math.floor(random(0, 10000000)),
           deviceId
         );
-        sendmessage(e);
+        sendmessage(e, {
+          url: url,
+          username: username,
+          password: password,
+          client: client,
+          topic: topic,
+        });
       }, frequency);
       setTimerId(timer);
       return () => clearInterval(timer);

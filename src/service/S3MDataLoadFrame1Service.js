@@ -1,4 +1,4 @@
-export const sendmessage = (entity) => {
+export const sendmessage = (entity, user) => {
   let message =
     "@01*01*842911192168125*" +
     entity.sentDate +
@@ -117,9 +117,9 @@ export const sendmessage = (entity) => {
   myHeaders.append("Content-Type", "application/json");
 
   var raw = JSON.stringify({
-    brokerUrl: "tcp://localhost:1883",
-    username: "kienrang",
-    password: "123456",
+    brokerUrl: user.url,
+    username: user.username,
+    password: user.password,
     clientId: "client-sub",
     defaultTopic: "loadTopic",
     message: message,
