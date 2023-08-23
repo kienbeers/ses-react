@@ -54,6 +54,14 @@ export const sendmessage = (entity, user) => {
     entity.sc +
     "," +
     entity.stotal +
+    ")*(" +
+    entity.pfa +
+    "," +
+    entity.pfb +
+    "," +
+    entity.pfc +
+    "," +
+    entity.pfavg +
     ")*" +
     entity.f +
     "*(" +
@@ -120,8 +128,8 @@ export const sendmessage = (entity, user) => {
     brokerUrl: user.url,
     username: user.username,
     password: user.password,
-    clientId: "client-sub",
-    defaultTopic: "loadTopic",
+    clientId: user.client,
+    defaultTopic: user.topic,
     message: message,
   });
 
