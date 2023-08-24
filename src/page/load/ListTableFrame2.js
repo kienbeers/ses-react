@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+import { updatenametab2 } from "../../store/Actions";
 import Context from "../../store/Context";
-import { Button, Drawer, Input, Modal, Radio, Space, Table, theme } from "antd";
-import S3MDataLoadFrame1 from "../../components/S3MDataLoadFrame1";
-import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import ListTabFrame1 from "../../components/ListTabFrame1";
-import { updatenametab } from "../../store/Actions";
+import { Button, Drawer, Input, Modal, Space } from "antd";
+import ListTabFrame2 from "../../components/ListTabFrame2";
 
-const ListTableFrame1 = () => {
+const ListTableFrame2 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [key, setKey] = useState();
   const [nameTab, setNameTab] = useState();
@@ -20,7 +17,7 @@ const ListTableFrame1 = () => {
   };
   const handleOk = () => {
     setNameTab("");
-    dispatch(updatenametab({ key: key, name: nameTab }));
+    dispatch(updatenametab2({ key: key, name: nameTab }));
     setIsModalOpen(false);
   };
   const handleCancel = () => {
@@ -36,13 +33,11 @@ const ListTableFrame1 = () => {
     setOpen(false);
   };
   const [state, dispatch] = useContext(Context);
-
-  useEffect(() => {}, [state]);
   return (
     <>
       <div className="container">
         <p style={{ fontSize: "30px", fontWeight: "bold" }}>
-          S3MDataLoadFrame 1
+          S3MDataLoadFrame 2
         </p>
         <Button
           type="primary"
@@ -67,7 +62,7 @@ const ListTableFrame1 = () => {
           </thead>
           <tbody>
             {" "}
-            {state.frame1.map((tab) => {
+            {state.frame2.map((tab) => {
               return (
                 <>
                   <tr>
@@ -98,7 +93,7 @@ const ListTableFrame1 = () => {
           </Space>
         }
       >
-        <ListTabFrame1></ListTabFrame1>
+        <ListTabFrame2 />
       </Drawer>
       <Modal
         title="Name"
@@ -116,4 +111,4 @@ const ListTableFrame1 = () => {
   );
 };
 
-export default ListTableFrame1;
+export default ListTableFrame2;

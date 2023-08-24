@@ -3,8 +3,20 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import InputMinMax from "./InputMinMax";
 import S3MDataLoadFrame2Entity from "../entities/S3MDataLoadFrame2Entity";
+import { sendmessageframe2 } from "../service/S3MDataLoadFrame2Service";
+import FormReceive from "./FormReceive";
 
 export default function S3MDataLoadFrame2() {
+  function formatDateToDDMMYYYYHHMMSS(date) {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
   const [timerId, setTimerId] = useState(null);
   const [disabled, setDisable] = useState(false);
   const [startTime, setStartTime] = useState();
@@ -310,11 +322,18 @@ export default function S3MDataLoadFrame2() {
           random(minVCNH29, maxVCNH29).toFixed(2),
           random(minVCNH30, maxVCNH30).toFixed(2),
           random(minVCNH31, maxVCNH31).toFixed(2),
-          new Date(),
+          formatDateToDDMMYYYYHHMMSS(new Date()),
           Math.floor(new Date().getTime() / 1000),
           Math.floor(random(1, 20))
         );
         console.log(e);
+        sendmessageframe2(e, {
+          url: url,
+          username: username,
+          password: password,
+          client: client,
+          topic: topic,
+        });
       }, 3000);
       setTimerId(timer);
 
@@ -3815,8 +3834,68 @@ export default function S3MDataLoadFrame2() {
 
   const [minVCNH31, setMinVCNH31] = useState(0);
   const [maxVCNH31, setMaxVCNH31] = useState(100);
+  const [url, setUrl] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [client, setClient] = useState("");
+  const [topic, setToppics] = useState("");
   return (
     <>
+      <div className="mt-2 row">
+        <div className="col-8">
+          <p>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseExample10"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Setting user receive
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample10">
+            <div class="card card-body">
+              <div className="row">
+                <div className="col-6">
+                  <FormReceive
+                    url={url}
+                    setUrl={setUrl}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                    client={client}
+                    setClient={setClient}
+                    topic={topic}
+                    setToppic={setToppics}
+                  />
+                </div>
+                <div className="col-6">
+                  <h4 style={{ fontSize: "20px" }} className="mt-2">
+                    Url: {url === "" ? <i>không có dữ liệu</i> : url}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Username:{" "}
+                    {username === "" ? <i>không có dữ liệu</i> : username}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Password:{" "}
+                    {password === "" ? <i>không có dữ liệu</i> : "*******"}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Client: {client === "" ? <i>không có dữ liệu</i> : client}
+                  </h4>
+                  <h4 style={{ fontSize: "20px" }} className="mt-3">
+                    Topic: {topic === "" ? <i>không có dữ liệu</i> : topic}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Thao tác */}
       <div className="row">
         <div className="col-5">

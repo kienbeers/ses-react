@@ -1,15 +1,15 @@
 import { Tabs } from "antd";
-import Context from "../../store/Context";
+import Context from "../store/Context";
 import React, { useContext, useRef, useState } from "react";
-import S3MDataLoadFrame1 from "../../components/S3MDataLoadFrame1";
-import { addtab, removetab } from "../../store/Actions";
-import { NotficationError } from "../../components/Notification";
+import S3MDataLoadFrame1 from "./S3MDataLoadFrame1";
+import { addtab, removetab } from "../store/Actions";
+import { NotficationError } from "./Notification";
 import { ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const ListTabFrame1 = () => {
   const [state, dispatch] = useContext(Context);
-  const [activeKey, setActiveKey] = useState(state.tabable[0].key);
+  const [activeKey, setActiveKey] = useState(state.frame1[0].key);
   const newTabIndex = useRef(2);
   const onChange = (newActiveKey) => {
     setActiveKey(newActiveKey);
@@ -28,17 +28,17 @@ const ListTabFrame1 = () => {
 
   const remove = (targetKey) => {
     console.log(targetKey);
-    if (state.tabable.length == 1) {
+    if (state.frame1.length == 1) {
       NotficationError("Không thể xóa");
       return;
     }
-    console.log(state.tabable.filter((a) => a.key == targetKey)[0].key);
-    for (let i = 0; i < state.tabable.length; i++) {
-      if (targetKey == state.tabable[i].key) {
+    console.log(state.frame1.filter((a) => a.key == targetKey)[0].key);
+    for (let i = 0; i < state.frame1.length; i++) {
+      if (targetKey == state.frame1[i].key) {
         if (i == 0) {
-          setActiveKey(state.tabable[i + 1].key);
+          setActiveKey(state.frame1[i + 1].key);
         } else {
-          setActiveKey(state.tabable[i - 1].key);
+          setActiveKey(state.frame1[i - 1].key);
         }
       }
     }
@@ -61,7 +61,7 @@ const ListTabFrame1 = () => {
         onChange={onChange}
         activeKey={activeKey}
         onEdit={onEdit}
-        items={state.tabable}
+        items={state.frame1}
       />
     </>
   );

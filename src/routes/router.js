@@ -12,11 +12,9 @@ import FormExample from "../page/example/Form";
 import ReactRouterExample from "../page/example/ReactRouter";
 import ReduxExample from "../page/example/ReduxExample";
 import TransitionExample from "../page/example/Transition";
-import S3MDataLoadFrame1 from "../components/S3MDataLoadFrame1";
-import S3MDataLoadFrame2 from "../components/S3MDataLoadFrame2";
 import ErorrApp from "../page/404Erorr";
-import ListTabFrame1 from "../page/load/ListTabFrame1";
 import ListTableFrame1 from "../page/load/ListTableFrame1";
+import ListTableFrame2 from "../page/load/ListTableFrame2";
 
 const publicRoutes = [
   {
@@ -77,19 +75,11 @@ const publicRoutes = [
   },
   {
     path: "/load/frame1",
-    component: S3MDataLoadFrame1,
-  },
-  {
-    path: "/load/frame2",
-    component: S3MDataLoadFrame2,
-  },
-  {
-    path: "/load/list",
     component: ListTableFrame1,
   },
   {
-    path: "/load/tab",
-    component: ListTabFrame1,
+    path: "/load/frame2",
+    component: ListTableFrame2,
   },
   {
     path: "/error",

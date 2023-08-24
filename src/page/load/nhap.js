@@ -1,362 +1,62 @@
-<Card bordered={true} className="bg-light">
-  <InputMinMax
-    title="VCN_H1"
-    minValue={minVCNH1}
-    maxValue={maxVCNH1}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH1}
-    setMaxValue={setMaxVCNH1}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H2"
-    minValue={minVCNH2}
-    maxValue={maxVCNH2}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH2}
-    setMaxValue={setMaxVCNH2}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H3"
-    minValue={minVCNH3}
-    maxValue={maxVCNH3}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH3}
-    setMaxValue={setMaxVCNH3}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H4"
-    minValue={minVCNH4}
-    maxValue={maxVCNH4}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH4}
-    setMaxValue={setMaxVCNH4}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H5"
-    minValue={minVCNH5}
-    maxValue={maxVCNH5}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH5}
-    setMaxValue={setMaxVCNH5}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H6"
-    minValue={minVCNH6}
-    maxValue={maxVCNH6}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH6}
-    setMaxValue={setMaxVCNH6}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H7"
-    minValue={minVCNH7}
-    maxValue={maxVCNH7}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH7}
-    setMaxValue={setMaxVCNH7}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H8"
-    minValue={minVCNH8}
-    maxValue={maxVCNH8}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH8}
-    setMaxValue={setMaxVCNH8}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H9"
-    minValue={minVCNH9}
-    maxValue={maxVCNH9}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH9}
-    setMaxValue={setMaxVCNH9}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H10"
-    minValue={minVCNH10}
-    maxValue={maxVCNH10}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH10}
-    setMaxValue={setMaxVCNH10}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H11"
-    minValue={minVCNH11}
-    maxValue={maxVCNH11}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH11}
-    setMaxValue={setMaxVCNH11}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H12"
-    minValue={minVCNH12}
-    maxValue={maxVCNH12}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH12}
-    setMaxValue={setMaxVCNH12}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H13"
-    minValue={minVCNH13}
-    maxValue={maxVCNH13}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH13}
-    setMaxValue={setMaxVCNH13}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H14"
-    minValue={minVCNH14}
-    maxValue={maxVCNH14}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH14}
-    setMaxValue={setMaxVCNH14}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H15"
-    minValue={minVCNH15}
-    maxValue={maxVCNH15}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH15}
-    setMaxValue={setMaxVCNH15}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H16"
-    minValue={minVCNH16}
-    maxValue={maxVCNH16}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH16}
-    setMaxValue={setMaxVCNH16}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H17"
-    minValue={minVCNH17}
-    maxValue={maxVCNH17}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH17}
-    setMaxValue={setMaxVCNH17}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H18"
-    minValue={minVCNH18}
-    maxValue={maxVCNH18}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH18}
-    setMaxValue={setMaxVCNH18}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H19"
-    minValue={minVCNH19}
-    maxValue={maxVCNH19}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH19}
-    setMaxValue={setMaxVCNH19}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H20"
-    minValue={minVCNH20}
-    maxValue={maxVCNH20}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH20}
-    setMaxValue={setMaxVCNH20}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H21"
-    minValue={minVCNH21}
-    maxValue={maxVCNH21}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH21}
-    setMaxValue={setMaxVCNH21}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H22"
-    minValue={minVCNH22}
-    maxValue={maxVCNH22}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH22}
-    setMaxValue={setMaxVCNH22}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H23"
-    minValue={minVCNH23}
-    maxValue={maxVCNH23}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH24}
-    setMaxValue={setMaxVCNH24}
-  />
-
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H25"
-    minValue={minVCNH25}
-    maxValue={maxVCNH25}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH25}
-    setMaxValue={setMaxVCNH25}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H26"
-    minValue={minVCNH26}
-    maxValue={maxVCNH26}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH26}
-    setMaxValue={setMaxVCNH26}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H27"
-    minValue={minVCNH27}
-    maxValue={maxVCNH27}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH27}
-    setMaxValue={setMaxVCNH27}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H28"
-    minValue={minVCNH28}
-    maxValue={maxVCNH28}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH28}
-    setMaxValue={setMaxVCNH28}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H29"
-    minValue={minVCNH29}
-    maxValue={maxVCNH29}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH29}
-    setMaxValue={setMaxVCNH29}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H30"
-    minValue={minVCNH30}
-    maxValue={maxVCNH30}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH30}
-    setMaxValue={setMaxVCNH30}
-  />
-  <InputMinMax
-    className="mt-2"
-    title="VCN_H31"
-    minValue={minVCNH31}
-    maxValue={maxVCNH31}
-    minX={0}
-    maxX={99}
-    minY={1}
-    maxY={100}
-    setMinValue={setMinVCNH31}
-    setMaxValue={setMaxVCNH31}
-  />
-</Card>;
+request.setIaH1(Double.valueOf(ls.get(3).get(0)));
+request.setIaH2(Double.valueOf(ls.get(3).get(1)));
+request.setIaH3(Double.valueOf(ls.get(3).get(2)));
+request.setIaH4(Double.valueOf(ls.get(3).get(3)));
+request.setIaH5(Double.valueOf(ls.get(3).get(4)));
+request.setIaH6(Double.valueOf(ls.get(3).get(5)));
+request.setIaH7(Double.valueOf(ls.get(3).get(6)));
+request.setIaH8(Double.valueOf(ls.get(3).get(7)));
+request.setIaH9(Double.valueOf(ls.get(3).get(8)));
+request.setIaH10(Double.valueOf(ls.get(3).get(9)));
+request.setIaH11(Double.valueOf(ls.get(3).get(10)));
+request.setIaH12(Double.valueOf(ls.get(3).get(11)));
+request.setIaH13(Double.valueOf(ls.get(3).get(12)));
+request.setIaH14(Double.valueOf(ls.get(3).get(13)));
+request.setIaH15(Double.valueOf(ls.get(3).get(14)));
+request.setIaH16(Double.valueOf(ls.get(3).get(15)));
+request.setIaH17(Double.valueOf(ls.get(3).get(16)));
+request.setIaH18(Double.valueOf(ls.get(3).get(17)));
+request.setIaH19(Double.valueOf(ls.get(3).get(18)));
+request.setIaH20(Double.valueOf(ls.get(3).get(19)));
+request.setIaH21(Double.valueOf(ls.get(3).get(20)));
+request.setIaH22(Double.valueOf(ls.get(3).get(21)));
+request.setIaH23(Double.valueOf(ls.get(3).get(22)));
+request.setIaH24(Double.valueOf(ls.get(3).get(23)));
+request.setIaH25(Double.valueOf(ls.get(3).get(24)));
+request.setIaH26(Double.valueOf(ls.get(3).get(25)));
+request.setIaH27(Double.valueOf(ls.get(3).get(26)));
+request.setIaH28(Double.valueOf(ls.get(3).get(27)));
+request.setIaH29(Double.valueOf(ls.get(3).get(28)));
+request.setIaH30(Double.valueOf(ls.get(3).get(29)));
+request.setIaH31(Double.valueOf(ls.get(3).get(30)));
+request.setIaH1(Double.valueOf(ls.get(3).get(0)));
+request.setIaH2(Double.valueOf(ls.get(3).get(1)));
+request.setIaH3(Double.valueOf(ls.get(3).get(2)));
+request.setIaH4(Double.valueOf(ls.get(3).get(3)));
+request.setIaH5(Double.valueOf(ls.get(3).get(4)));
+request.setIaH6(Double.valueOf(ls.get(3).get(5)));
+request.setIaH7(Double.valueOf(ls.get(3).get(6)));
+request.setIaH8(Double.valueOf(ls.get(3).get(7)));
+request.setIaH9(Double.valueOf(ls.get(3).get(8)));
+request.setIaH10(Double.valueOf(ls.get(3).get(9)));
+request.setIaH11(Double.valueOf(ls.get(3).get(10)));
+request.setIaH12(Double.valueOf(ls.get(3).get(11)));
+request.setIaH13(Double.valueOf(ls.get(3).get(12)));
+request.setIaH14(Double.valueOf(ls.get(3).get(13)));
+request.setIaH15(Double.valueOf(ls.get(3).get(14)));
+request.setIaH16(Double.valueOf(ls.get(3).get(15)));
+request.setIaH17(Double.valueOf(ls.get(3).get(16)));
+request.setIaH18(Double.valueOf(ls.get(3).get(17)));
+request.setIaH19(Double.valueOf(ls.get(3).get(18)));
+request.setIaH20(Double.valueOf(ls.get(3).get(19)));
+request.setIaH21(Double.valueOf(ls.get(3).get(20)));
+request.setIaH22(Double.valueOf(ls.get(3).get(21)));
+request.setIaH23(Double.valueOf(ls.get(3).get(22)));
+request.setIaH24(Double.valueOf(ls.get(3).get(23)));
+request.setIaH25(Double.valueOf(ls.get(3).get(24)));
+request.setIaH26(Double.valueOf(ls.get(3).get(25)));
+request.setIaH27(Double.valueOf(ls.get(3).get(26)));
+request.setIaH28(Double.valueOf(ls.get(3).get(27)));
+request.setIaH29(Double.valueOf(ls.get(3).get(28)));
+request.setIaH30(Double.valueOf(ls.get(3).get(29)));
+request.setIaH31(Double.valueOf(ls.get(3).get(30)));
