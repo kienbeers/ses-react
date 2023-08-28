@@ -28,8 +28,20 @@ export default function S3MDataLoadFrame1(props) {
     }
     setFrequency(event.target.value);
   };
-  const toastSuccessAccessory = (message) => {
+  const toastErrorAccessory = (message) => {
     toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const toastSuccessAccessory = (message) => {
+    toast.success(message, {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -141,6 +153,8 @@ export default function S3MDataLoadFrame1(props) {
       }, frequency);
       setTimerId(timer);
       return () => clearInterval(timer);
+    } else {
+      toastErrorAccessory("Dữ liệu truyền vào không hợp lệ");
     }
   };
   const handelCkickStop = () => {
@@ -157,7 +171,6 @@ export default function S3MDataLoadFrame1(props) {
       return true;
     }
     if (minUab < 0 || maxUab > 45000 || minUab > maxUab) {
-      toastSuccessAccessory("Dữ liệu truyền vào không hợp lệ");
       return false;
     }
     if (minUbc === "") {
@@ -1119,8 +1132,18 @@ export default function S3MDataLoadFrame1(props) {
     setEndTime(new Date(timeString[1]));
   };
   const checkTime = () => {
-    console.log("chạy");
-    updateStatus({ key: props.data, status: true });
+    if (
+      startTime === undefined ||
+      startTime === "" ||
+      endTime === undefined ||
+      endTime === ""
+    ) {
+      toastErrorAccessory("Chưa nhập giờ!");
+      return;
+    } else {
+      updateStatus({ key: props.data, status: true });
+      toastSuccessAccessory("Đã gửi");
+    }
     const id = setInterval(() => {
       const nows = new Date();
       const st = new Date(startTime);

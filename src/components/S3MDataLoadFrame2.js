@@ -1,12 +1,14 @@
 import { Button, Card, DatePicker, Input, Switch } from "antd";
-import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import React, { useContext, useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import InputMinMax from "./InputMinMax";
 import S3MDataLoadFrame2Entity from "../entities/S3MDataLoadFrame2Entity";
 import { sendmessageframe2 } from "../service/S3MDataLoadFrame2Service";
 import FormReceive from "./FormReceive";
+import Context from "../store/Context";
+import { updatestatus2 } from "../store/Actions";
 
-export default function S3MDataLoadFrame2() {
+export default function S3MDataLoadFrame2(props) {
   function formatDateToDDMMYYYYHHMMSS(date) {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -17,6 +19,7 @@ export default function S3MDataLoadFrame2() {
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
+  const [state, dispatch] = useContext(Context);
   const [timerId, setTimerId] = useState(null);
   const [disabled, setDisable] = useState(false);
   const [startTime, setStartTime] = useState();
@@ -30,6 +33,7 @@ export default function S3MDataLoadFrame2() {
     setFrequency(event.target.value);
   };
   const handelCkickStop = () => {
+    updateStatus({ key: props.data, status: false });
     clearInterval(timerId);
   };
   const random = (min, max) => {
@@ -39,6 +43,7 @@ export default function S3MDataLoadFrame2() {
   };
   const handelCkickRun = () => {
     if (validationForm() === true) {
+      updateStatus({ key: props.data, status: true });
       const timer = setInterval(() => {
         const e = new S3MDataLoadFrame2Entity(
           Math.floor(random(1, 10000)),
@@ -338,18 +343,58 @@ export default function S3MDataLoadFrame2() {
       setTimerId(timer);
 
       return () => clearInterval(timer);
+    } else {
+      toastErrorAccessory("Dữ liệu truyền vào không hợp lệ");
     }
+  };
+  const toastErrorAccessory = (message) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const toastSuccessAccessory = (message) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
   const onChangeSw = (checked) => {
     setDisable(checked);
     handelCkickStop();
   };
-
+  const updateStatus = (payload) => {
+    dispatch(updatestatus2(payload));
+  };
   const onChangeTime = (time, timeString) => {
     setStartTime(new Date(timeString[0]));
     setEndTime(new Date(timeString[1]));
   };
   const checkTime = () => {
+    if (
+      startTime === undefined ||
+      startTime === "" ||
+      endTime === undefined ||
+      endTime === ""
+    ) {
+      toastErrorAccessory("Chưa nhập giờ!");
+      return;
+    } else {
+      toastSuccessAccessory("Đã bắt đầu!");
+    }
+
     const id = setInterval(() => {
       const nows = new Date();
       const st = new Date(startTime);
@@ -377,6 +422,7 @@ export default function S3MDataLoadFrame2() {
       }
     }, 1000);
   };
+
   const validationForm = () => {
     if (
       minIAH1 < 0 ||
@@ -3003,7 +3049,8 @@ export default function S3MDataLoadFrame2() {
   useEffect(() => {
     clearInterval(timerId);
     setTimerId(null);
-  }, [disabled]);
+    updateStatus({ key: props.data, status: true });
+  }, [disabled == false]);
 
   const [minIAH1, setMinIAH1] = useState(0);
   const [maxIAH1, setMaxIAH1] = useState(100);
