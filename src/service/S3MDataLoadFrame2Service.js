@@ -1,6 +1,6 @@
 import { ConvertFrame2 } from "../utils/MessageConvert";
 
-export const sendmessageframe2 = (e, user) => {
+export const sendmessageframe2 = (data, user) => {
   let message = ConvertFrame2(data, {
     typeSystem: "01",
     typeDevice: "01",
@@ -13,7 +13,7 @@ export const sendmessageframe2 = (e, user) => {
     a4: "04",
     a5: "05",
     func: "06",
-    messageType: "07",
+    messageType: "02",
     crc: "01f8",
   });
   console.log(message);
